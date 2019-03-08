@@ -1,7 +1,19 @@
 import React, { Component } from "react";
+import SelectSizeMenu from './SelectSizeMenu';
 import { connect } from "react-redux";
 import { getNewBoard } from "../actions/board.action";
 import { withRouter } from "react-router-dom";
+import Select from 'react-select';
+
+const colourOptions = [
+  { value: '', label: '', color: '#00B8D9', isFixed: true },
+  { value: '2', label: '2 x 2', color: '#0052CC' },
+  { value: '3', label: '3 x 3', color: '#5243AA' },
+  { value: '10', label: '10 x 10', color: '#FF5630' },
+  { value: '15', label: '15 x 15', color: '#FF8B00' },
+  { value: '20', label: '20 x 20', color: '#FFC400' }
+];
+
 
 class UserForm extends Component {
   constructor(props) {
@@ -23,7 +35,6 @@ class UserForm extends Component {
   handleSubmit(evt) {
     evt.preventDefault();
     this.props.getNewBoard(this.state.boardSize);
-    // transfer to co GameBoard component
     const props = {
       name: this.state.name,
       level: this.state.level,
@@ -36,31 +47,40 @@ class UserForm extends Component {
   }
 
   render() {
+    // debugger
     const { name, level, boardSize } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <input
+        <label htmlFor="name" className='form-name'>Name:</label>
+        <input className='user-name-input'
           type="text"
           name="name"
           value={name}
           onChange={this.handleChange}
+          placeholder='Name' autoFocus
         />
-        <select name="level" onChange={this.handleChange}>
-          <option value={{}} />
-          <option value="easy">easy</option>
-          <option value="medium">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <select name="boardSize" onChange={this.handleChange}>
-          <option value={{}} />
-          <option value="2">2 x 2</option>
-          <option value="3">3 x 3</option>
-          <option value="10">10 x 10</option>
-          <option value="15">15 x 15</option>
-          <option value="20">20 x 20</option>
-        </select>
-        <button type="submit">Start game</button>
+        <div className='level'>
+          <div className='level-header'>Level:</div>
+          <div className='buttons-container'>
+            <button className='level-button'>easy</button>
+            <button className='level-button'>medium</button>
+            <button className='level-button'>hard</button>
+          </div>
+        </div>
+        <div>
+          <div className='level-header'>Size:</div>
+          <select name="boardSize" onChange={this.handleChange}>
+            <option value={{}} />
+            <option value="2">2 x 2</option>
+            <option value="3">3 x 3</option>
+            <option value="10">10 x 10</option>
+            <option value="15">15 x 15</option>
+            <option value="20">20 x 20</option>
+          </select>
+          <SelectSizeMenu name='boardSize'/>
+          <button className='start-button' type="submit">Start game</button>
+        </div>
+
       </form>
     );
   }
@@ -77,3 +97,11 @@ export default withRouter(
     mapDispatchToProps
   )(UserForm)
 );
+
+
+
+
+
+
+
+// <Select name="boardSize" options={colourOptions} onChange={this.handleChange} value={this.state.boardSize}

@@ -225,15 +225,15 @@ export const minimax = (board, lastTurn, computerTurn) => {
   const emptyCells = findEmptyCells(board);
   console.log("emtyCells:", emptyCells, "last Turn:", lastTurn, "computerTurn:", computerTurn);
   // console.log("emtyCells:", emptyCells);
-  debugger
+  // debugger
   if (!computerTurn && checkWinner(board, lastTurn)) {
-    debugger
+    // debugger
     return { score: 1 };
   } else if (computerTurn && checkWinner(board, lastTurn)) {
-    debugger
+    // debugger
     return { score: -1 };
   } else if (!emptyCells.length) {
-    debugger
+    // debugger
     return { score: 0 };
   }
 

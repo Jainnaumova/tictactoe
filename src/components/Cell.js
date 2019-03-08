@@ -1,5 +1,4 @@
 import React from "react";
-// import "../../public/index.css";
 import "../index.css";
 
 export default props => {
