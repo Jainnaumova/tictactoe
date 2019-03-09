@@ -64,24 +64,24 @@ div img {
 .rules-paragraph {
   margin-top: 0;
   margin-bottom: 0;
-  animation-duration: 15s;
-  animation-name: slidein;
+  font-size: 1.4em;
+  text-shadow: 2px 2px #eff30b;
 }
 
 @keyframes slidein {
   from {
-    margin-left: 50%;
+    margin-left: -30%;
     width: 100%;
   }
   50% {
     font-size: 150%;
-    margin-left: 25%;
+    margin-left: -20%;
     width: 150%;
     animation-play-state: paused;
   }
 
   to {
-    margin-left: 0%;
+    margin-left: -30%;
     width: 100%;
   }
 }
@@ -109,10 +109,24 @@ div img {
 
 .level {
   display: flex;
+  margin-bottom: 2em;
 }
 
 .level-header {
   margin-right: 0.5em;
+}
+
+.size {
+  display: flex;
+  margin-bottom: 2em;
+}
+
+.size-header {
+  margin-right: 1em;
+}
+
+.select-container {
+  width: 13.4em;
 }
 
 .buttons-container {
@@ -147,15 +161,19 @@ div img {
   transform: translateY(7px);
 }
 
+.pushed-button {
+  background-color: #1e547b;
+  color: #fff;
+  transform: translateY(7px);
+}
 /* button-start */
 
 .start-button {
-  margin-left: 25%;
-  margin-top: 10%;
-  width: 180px;
-  height: 45px;
+  margin-left: 8em;
+  width: 210px;
+  height: 60px;
   font-family: 'Gloria Hallelujah', cursive;
-  font-size: 11px;
+  font-size: 22px;
   text-transform: uppercase;
   letter-spacing: 2.5px;
   font-weight: bold;
@@ -176,32 +194,46 @@ div img {
   transform: translateY(7px);
 }
 
+.start-button-disabled {
+  background-color: #1e547b;
+  color: #fff;
+  opacity: 0.7;
+  transform: translateY(7px);
+}
+
 /* Gameboard */
 
 .container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
   font-family: 'Gloria Hallelujah', cursive;
-  font-size: 1em;
+  font-size: 2em;
+  margin-top: 0.9em;
   align-items: center;
+}
+
+.name-container {
+  align-self: flex-start;
+  flex-wrap: wrap;
+  overflow-wrap: wrap;
+  overflow: auto;
+  margin-top: -0.83em;
+  margin-left: -0.83em;
+  /* margin-right: -20px; */
+  padding-left: 0;
+  width: 20%;
+}
+
+.player-name {
+  overflow-wrap: wrap;
 }
 
 .board {
   position: relative;
   justify-content: center;
-}
-
-.board-2 {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 60px;
-  /* padding: 10px; */
-}
-
-.board-3 {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 90px;
+  margin-bottom: 2em;
+  width: 45%;
 }
 
 .board-10 {
@@ -238,16 +270,14 @@ div img {
 }
 
 .buttons-group {
-  display: flex;
+  align-self: flex-start;
 }
 
 .board-button {
-  margin-left: 10%;
-  margin-top: 10%;
-  width: 180px;
-  height: 45px;
+  width: 210px;
+  height: 60px;
   font-family: 'Gloria Hallelujah', cursive;
-  font-size: 11px;
+  font-size: 22px;
   text-transform: uppercase;
   letter-spacing: 2.5px;
   font-weight: bold;
@@ -283,22 +313,55 @@ div img {
   transform: rotate(180deg);
 }
 
-.red {
-  /* background-color: red; */
-  background-image: url('http://toastmasters.ru/wp-content/uploads/2016/04/Tic-tac-toe-cross.png');
+.cross {
+  background-image: url('http://toastmasters.ru/wp-content/uploads/2016/04/Tic-tac-toe-cross.png'), url('http://www.thecarpentersshopinc.com/Images/Wood-Species/White-Birch-Wood.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30px 30px;
+  background-size: contain, cover;
 }
 
-.blue {
-  /* background-color: blue; */
-  background-image: url('http://toastmasters.ru/wp-content/uploads/2016/04/Tic-tac-toe-nought-e1461667111145.png');
+/* Tic-tac-toe-nought_blue.png */
+/* ./public/Tic-tac-toe-nought_blue.png */
+/* http://toastmasters.ru/wp-content/uploads/2016/04/Tic-tac-toe-nought-e1461667111145.png */
+/* public/Tic-tac-toe-nought_blue.png */
+
+.nought {
+  background-image: url('http://toastmasters.ru/wp-content/uploads/2016/04/Tic-tac-toe-nought-e1461667111145.png'), url('http://www.thecarpentersshopinc.com/Images/Wood-Species/White-Birch-Wood.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30px 30px;
+  background-size: contain, cover;
 }
 
 .winner-message {
   position: absolute;
-  top: 33%;
-  left: 33%;
-  width: 100px;
-  height: 80px;
-  background-color: coral;
-  color: #fff;
+  background-repeat: no-repeat;
+  font-size: 2.4em;
+  color: red;
+  z-index: 10;
+  -webkit-animation-name: slidein;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-iteration-count: 3;
+  animation-name: slidein;
+  animation-duration: 4s;
+  animation-iteration-count: 3;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes example {
+  0%   {left:0px; top:0px;}
+  25%  {left:200px; top:200px;}
+  50%  {left:400px; top:400px;}
+  75%  {left:600px; top:600px;}
+  100% {left:0px; top:0px;}
+}
+
+/* Standard syntax */
+@keyframes example {
+  0%   {left:0px; top:0px;}
+  25%  {left:200px; top:200px;}
+  50%  {left:400px; top:400px;}
+  75%  {left:600px; top:600px;}
+  100% {left:0px; top:0px;}
 }

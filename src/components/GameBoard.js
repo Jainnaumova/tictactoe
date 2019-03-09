@@ -4,14 +4,15 @@ import Cell from "./Cell";
 import WinMessage from "./WinMessage";
 import { handleClick, getNewBoard } from "../actions/board.action";
 import { Link, withRouter } from "react-router-dom";
+import { checkWinner } from '../utils/checkingWinner';
 import {
   findRandomCell,
-  checkWinner,
   findEmptyCells,
   findCell,
-  minimax
-} from "../reducers/utilFunc";
-// import "../../public/index.css";
+  minimax,
+} from "../utils/utilFunc";
+
+import { turnGenerator } from '../ai/turnGenerator';
 import "../index.css";
 
 class GameBoard extends Component {
@@ -19,39 +20,44 @@ class GameBoard extends Component {
     super(props);
     this.state = {
       gameWon: false,
-      tie: false
+      tie: false,
     };
-    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.tryAgain = false;
+    this.handleClick = this.handleClick.bind(this);
+    this.handleTryAgain = this.handleTryAgain.bind(this);
   }
 
   componentDidUpdate() {
-    // debugger
-    if (!this.state.gameWon) {
+    debugger
+    if (!this.state.gameWon && !this.tryAgain) {
       if (checkWinner(this.props.board, this.props.lastTurn)) {
+        this.gameWon = checkWinner(this.props.board, this.props.lastTurn);
         this.setState({ gameWon: true });
       }
     }
     if (
-      !this.state.gameWon &&
+      !this.gameWon &&
       !findEmptyCells(this.props.board).length &&
-      !this.state.tie
+      !this.state.tie && !this.tryAgain
     ) {
       this.setState({ tie: true });
     }
+
     if (
+      !this.gameWon &&
+      !this.tryAgain &&
       this.props.computerTurn &&
       findEmptyCells(this.props.board).length
     ) {
       this.markCellByComputer();
     }
+    if (this.tryAgain) {
+      this.tryAgain = false;
+    }
   }
 
   getBoardClass() {
     switch (this.props.location.props.boardSize) {
-      case "2":
-        return "board-2";
-      case "3":
-        return "board-3";
       case "10":
         return "board-10";
       case "15":
@@ -64,57 +70,73 @@ class GameBoard extends Component {
   }
 
   markCellByComputer() {
-    // const cell = findRandomCell(this.props.board);
     const board = this.props.board.slice();
-    console.log('sliced board:', board);
-    const cell = findCell(
-      board,
-      minimax(board, null, this.props.computerTurn)
-    );
-    console.log("new cell to go:", cell);
+    const cell = turnGenerator(board);
     const data = { id: cell.id, value: this.props.computerTurn ? false : true };
-    console.log("new data:", data);
-    // this.props.handleClick(data); // here handleClick from action creator !!
+    this.props.handleClick(data); // handleClick from action creator
+  }
+
+  handleClick(data) {
+    if (this.state.gameWon) return;
+    this.props.handleClick(data);
   }
 
   nameToUpperCase(input){
     return input.toUpperCase()
   }
 
-  handleButtonClick() {
-    debugger
-    this.props.getNewBoard(this.props.location.props.boardSize);
-    this.render();
+  handleTryAgain() {
+    this.tryAgain = true;
+    this.props.getNewBoard(this.props.location.props.boardSize, this.props.location.props.level);
+  }
+
+  chooseMessage() {
+    if (this.state.gameWon && !this.props.lastTurn.value) {
+      return (<WinMessage text={"congratulations!"} />);
+    }
+    if (this.state.gameWon && this.props.lastTurn.value) {
+      return (<WinMessage text={"game over"} />)
+    }
+    if (this.state.tie) {
+      return (<WinMessage text={"tie"} />)
+    }
   }
 
   render() {
     debugger
     const { board } = this.props;
     return (
-      <div className="container">
-        <h2>{`Player: ${this.nameToUpperCase(this.props.history.location.props.name)}`}</h2>
-        <h3>{`Next turn: ${!this.props.computerTurn}`}</h3>
+      <div>
+        <h1>TicTacToe</h1>
+        <div className="container">
+          <div className='name-container'>
+            <h2 className="player-name">{`Player: ${this.nameToUpperCase(this.props.history.location.props.name)}`}</h2>
+            {!this.props.computerTurn ? (<h3>{`Next turn: ${this.nameToUpperCase(this.props.history.location.props.name)}`}</h3>) : (<h3>Next turn: computer thinking</h3>)}
+          </div>
           <div className={`board ${this.getBoardClass()}`}>
-            {this.state.gameWon && <WinMessage text={"win"} />}
-            {this.state.tie && <WinMessage text={"tie"} />}
-            {board.map(cell => {
+            {this.chooseMessage()}
+            {board.map((cell, i) => {
               return (
                 <Cell
                   data={cell}
+                  key={i}
                   computerTurn={this.props.computerTurn}
-                  handleClick={this.props.handleClick}
+                  handleClick={this.handleClick}
                 />
               );
             })}
           </div>
           <div className='buttons-group'>
-            <Link to='/'>
-              <button className='board-button'>Back</button>
-            </Link>
             <div>
-              <button className='board-button' onClick={this.handleButtonClick}>Try again</button>
+              <Link to='/'>
+                <button className='board-button'>Back</button>
+              </Link>
+            </div>
+            <div>
+              <button className='board-button' onClick={this.handleTryAgain}>Try again</button>
             </div>
           </div>
+        </div>
       </div>
     );
   }
@@ -128,10 +150,18 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   handleClick: data => dispatch(handleClick(data)),
-  getNewBoard: size => dispatch(getNewBoard(size))
+  getNewBoard: (size, level) => dispatch(getNewBoard(size, level))
 });
 
 export default withRouter (connect(
   mapStateToProps,
   mapDispatchToProps
 )(GameBoard))
+
+
+
+
+
+
+// {this.state.gameWon && <WinMessage text={"congratulations!"} />}
+// {this.state.tie && <WinMessage text={"tie"} />}

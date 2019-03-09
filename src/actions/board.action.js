@@ -12,9 +12,9 @@ export const checkCell = data => ({
 });
 
 // thunk
-export const getNewBoard = size => {
+export const getNewBoard = (size, level) => {
   return dispatch => {
-    return dispatch(createBoard(size));
+    return dispatch(createBoard(size, level));
   };
 };
 

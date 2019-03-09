@@ -13,9 +13,9 @@ export default props => {
     <div
       className={`cell ${
         props.data.value === true
-          ? "red"
+          ? "cross"
           : props.data.value === false
-          ? "blue"
+          ? "nought"
           : ""
       }`}
       onClick={() => handleClick(data)}

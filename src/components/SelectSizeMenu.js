@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import chroma from 'chroma-js';
 import Select from 'react-select';
 
 
-const colourOptions = [
+const options = [
   { value: '', label: '', color: '#00B8D9', isFixed: true },
-  { value: '2', label: '2 x 2', color: '#0052CC' },
-  { value: '3', label: '3 x 3', color: '#5243AA' },
   { value: '10', label: '10 x 10', color: '#FF5630' },
   { value: '15', label: '15 x 15', color: '#FF8B00' },
   { value: '20', label: '20 x 20', color: '#FFC400' }
@@ -49,11 +47,30 @@ const colourStyles = {
   singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
 };
 
-export default () => (
-  <Select
-    defaultValue={colourOptions[0]}
-    label="Single select"
-    options={colourOptions}
-    styles={colourStyles}
-  />
-)
+export default class Selector extends Component {
+  constructor(props) {
+    super(props);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(e) {
+    const params = {
+      target: {
+        name: this.props.name,
+        value: e.value
+      }
+    }
+    this.props.handleChange(params);
+  }
+
+  render() {
+    return (
+      <Select
+        onChange={this.onChange}
+        defaultValue={options[0]}
+        options={options}
+        styles={colourStyles}
+      />
+    );
+  }
+}

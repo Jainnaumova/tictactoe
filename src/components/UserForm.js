@@ -5,16 +5,6 @@ import { getNewBoard } from "../actions/board.action";
 import { withRouter } from "react-router-dom";
 import Select from 'react-select';
 
-const colourOptions = [
-  { value: '', label: '', color: '#00B8D9', isFixed: true },
-  { value: '2', label: '2 x 2', color: '#0052CC' },
-  { value: '3', label: '3 x 3', color: '#5243AA' },
-  { value: '10', label: '10 x 10', color: '#FF5630' },
-  { value: '15', label: '15 x 15', color: '#FF8B00' },
-  { value: '20', label: '20 x 20', color: '#FFC400' }
-];
-
-
 class UserForm extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +24,7 @@ class UserForm extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    this.props.getNewBoard(this.state.boardSize);
+    this.props.getNewBoard(this.state.boardSize, this.state.level);
     const props = {
       name: this.state.name,
       level: this.state.level,
@@ -46,8 +36,11 @@ class UserForm extends Component {
     });
   }
 
+  getLevelStyle(value) {
+    return this.state.level === value ? 'level-button pushed-button' : 'level-button';
+  }
+
   render() {
-    // debugger
     const { name, level, boardSize } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
@@ -62,32 +55,27 @@ class UserForm extends Component {
         <div className='level'>
           <div className='level-header'>Level:</div>
           <div className='buttons-container'>
-            <button className='level-button'>easy</button>
-            <button className='level-button'>medium</button>
-            <button className='level-button'>hard</button>
+            <button name='level' type='button' value='easy' className={this.getLevelStyle('easy')} onClick={this.handleChange} >easy</button>
+            <button name='level' type='button' value='medium' className={this.getLevelStyle('medium')} onClick={this.handleChange} >medium</button>
+            <button name='level' type='button' value='hard' className={this.getLevelStyle('hard')} onClick={this.handleChange}>hard</button>
+          </div>
+        </div>
+        <div className='size'>
+          <div className='size-header'>Size:</div>
+          <div className='select-container'>
+            <SelectSizeMenu name="boardSize" handleChange={this.handleChange} />
           </div>
         </div>
         <div>
-          <div className='level-header'>Size:</div>
-          <select name="boardSize" onChange={this.handleChange}>
-            <option value={{}} />
-            <option value="2">2 x 2</option>
-            <option value="3">3 x 3</option>
-            <option value="10">10 x 10</option>
-            <option value="15">15 x 15</option>
-            <option value="20">20 x 20</option>
-          </select>
-          <SelectSizeMenu name='boardSize'/>
-          <button className='start-button' type="submit">Start game</button>
+          <button className={!this.state.level || !this.state.boardSize ? 'start-button start-button-disabled' : 'start-button'} type="submit" disabled={!this.state.level || !this.state.boardSize}>Start game</button>
         </div>
-
       </form>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  getNewBoard: size => dispatch(getNewBoard(size))
+  getNewBoard: (size, level) => dispatch(getNewBoard(size, level))
 });
 
 export default withRouter(
