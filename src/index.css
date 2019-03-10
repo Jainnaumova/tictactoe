@@ -321,13 +321,10 @@ div img {
   background-size: contain, cover;
 }
 
-/* Tic-tac-toe-nought_blue.png */
-/* ./public/Tic-tac-toe-nought_blue.png */
 /* http://toastmasters.ru/wp-content/uploads/2016/04/Tic-tac-toe-nought-e1461667111145.png */
-/* public/Tic-tac-toe-nought_blue.png */
 
 .nought {
-  background-image: url('http://toastmasters.ru/wp-content/uploads/2016/04/Tic-tac-toe-nought-e1461667111145.png'), url('http://www.thecarpentersshopinc.com/Images/Wood-Species/White-Birch-Wood.png');
+  background-image: url('Tic-tac-toe-nought_blue.png'), url('http://www.thecarpentersshopinc.com/Images/Wood-Species/White-Birch-Wood.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30px 30px;

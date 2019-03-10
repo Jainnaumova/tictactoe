@@ -18,6 +18,7 @@ import {
 // to left top diagonal
 const goLeftUp = (board, coord, value, count = 0) => {
   const res = {};
+  // board exist and value === value (man turn)
   if (
     findCellByCoord(board, coord) &&
     findCellByCoord(board, coord).value === value
@@ -28,11 +29,14 @@ const goLeftUp = (board, coord, value, count = 0) => {
       y: coord.y - 1
     };
     return goLeftUp(board, newCoord, value, count);
+    // board exist and next is empty cell
   } else if (findCellByCoord(board, coord) && findCellByCoord(board, coord).value === null) {
     res.edge = coord;
     res.count = count;
+// board exist and value !== value (computer turn)
   } else if (findCellByCoord(board, coord) && findCellByCoord(board, coord).value !== value) {
     res.count = count;
+// board not exist
   } else if (!findCellByCoord(board, coord)) {
     res.count = count;
   }
@@ -208,7 +212,7 @@ const goDown = (board, coord, value, count = 0) => {
 };
 
 // check lines
-
+// return object with coords of two edgeCells and count
 const checkDiagonalLine = (board, coord, value) => {
     const one = goLeftUp(board, coord, value, -1);
     const two = goRightDown(board, coord, value, -1);
@@ -249,8 +253,11 @@ const checkVerticalLine = (board, coord, value) => {
   }
 };
 
+//
+
 export const checkHumanThreeInARow = (board) => {
   const humanCells = findHumanCells(board);
+  // array of object with all human checked lines
   const res = [];
   for (let i = 0; i < humanCells.length; i++) {
     const lastTurn = humanCells[i];
@@ -279,11 +286,15 @@ export const checkHumanThreeInARow = (board) => {
     );
     res.push(c);
   }
+  // remove all lines with no available edges
   _.remove(res, el => {
     return !el.edgeOne && !el.edgeTwo;
   });
+  // find max count (length) of the line
   const maxCount = _.maxBy(res, 'count').count;
+  // find all lines with max count - array of objects
   const withMaxCounts = findWithCount(res, maxCount);
+  // remapping line objects to create new array of objects with priority props, count and edge cell prop (coord)
   const resList = [];
   for (let i = 0; i < withMaxCounts.length; i++) {
     resList.push({

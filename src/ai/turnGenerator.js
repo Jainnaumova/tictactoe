@@ -2,13 +2,14 @@ import _ from 'lodash';
 import { checkHumanThreeInARow } from './difficultyLevelOne';
 import { checkHumanThreeInARowEmpty } from './difficultyLevelTwo';
 
-export const turnGenerator = (board, difficalty = 1) => {
+export const turnGenerator = (board, difficulty) => {
+debugger
   let potentialTurns;
-  switch(difficalty) {
-    case 0:
+  switch(difficulty) {
+    case 'easy':
       potentialTurns = checkHumanThreeInARow(board);
       break;
-    case 1:
+    case 'medium':
       potentialTurns = checkHumanThreeInARow(board).concat(checkHumanThreeInARowEmpty(board));
       break;
     default:
@@ -19,17 +20,20 @@ export const turnGenerator = (board, difficalty = 1) => {
 
 // selects cell with highest count among turns with higher priority
 const pickCellForTurn = (potentialTurns) => {
+  // find max count (length) of the line
   const maxCount = _.maxBy(potentialTurns, 'count').count;
+  // find max priority of the line
   const maxPriority = _.maxBy(potentialTurns, 'priority').priority;
-  console.log("POTENTIAL: ", potentialTurns);
   if (isPriorityDiffer(potentialTurns)) {
+    // trying to find maxcount and max priority
     let turn = potentialTurns.filter(el => el.count === maxCount && el.priority === maxPriority)[0];
+    // no turn with max count and max priority
     if (!turn) {
       turn = potentialTurns.filter(el => el.count === maxCount && el.priority === maxPriority - 1)[0];
     }
-    if (!turn) {
-      turn = potentialTurns.filter(el => el.count === maxCount && el.priority === maxPriority - 2)[0];
-    }
+    // if (!turn) {
+    //   turn = potentialTurns.filter(el => el.count === maxCount && el.priority === maxPriority - 2)[0];
+    // }
     return turn.cell;
   } else {
     return potentialTurns.filter(el => el.count === maxCount)[0].cell;

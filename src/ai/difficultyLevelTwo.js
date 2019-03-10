@@ -230,7 +230,7 @@ const checkVerticalLineEmpty = (board, coord, value) => {
   }
 };
 
-// finding empty cells around cpecific cell (with value null)
+// finding empty cells around specific cell (with value null)
 const findSpecificCellsAroundCell = (board, coord, value) => {
   const cellsAround = [];
   const leftUp = findCellByCoord(board, {x: coord.x - 1, y: coord.y - 1});
@@ -252,11 +252,11 @@ const findSpecificCellsAroundCell = (board, coord, value) => {
   return cellsAround;
 }
 
-// finding empty cells around cpecific cell (with value null)
+// finding empty cells around specific cell (with value null)
 const findCellsAroundCell = (board, coord, value) => {
   const cellsAround = [];
   const leftUp = findCellByCoord(board, {x: coord.x - 1, y: coord.y - 1});
-  if ( leftUp && leftUp.value === value) cellsAround.push(coord);  // TODO: should I push coord here or new coords ??????
+  if ( leftUp && leftUp.value === value) cellsAround.push(coord);
   const rightDown = findCellByCoord(board, {x: coord.x + 1, y: coord.y + 1});
   if ( rightDown && rightDown.value === value) cellsAround.push(coord);
   const leftDown = findCellByCoord(board, {x: coord.x + 1, y: coord.y - 1});

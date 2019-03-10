@@ -28,7 +28,7 @@ class GameBoard extends Component {
   }
 
   componentDidUpdate() {
-    debugger
+    // debugger
     if (!this.state.gameWon && !this.tryAgain) {
       if (checkWinner(this.props.board, this.props.lastTurn)) {
         this.gameWon = checkWinner(this.props.board, this.props.lastTurn);
@@ -49,7 +49,10 @@ class GameBoard extends Component {
       this.props.computerTurn &&
       findEmptyCells(this.props.board).length
     ) {
-      this.markCellByComputer();
+      // this.markCellByComputer();
+      setTimeout(() => {
+        this.markCellByComputer()
+      }, 800)
     }
     if (this.tryAgain) {
       this.tryAgain = false;
@@ -70,8 +73,10 @@ class GameBoard extends Component {
   }
 
   markCellByComputer() {
+    debugger
     const board = this.props.board.slice();
-    const cell = turnGenerator(board);
+    const cell = turnGenerator(board, this.props.location.props.level);
+    debugger
     const data = { id: cell.id, value: this.props.computerTurn ? false : true };
     this.props.handleClick(data); // handleClick from action creator
   }
@@ -91,14 +96,16 @@ class GameBoard extends Component {
   }
 
   chooseMessage() {
-    if (this.state.gameWon && !this.props.lastTurn.value) {
-      return (<WinMessage text={"congratulations!"} />);
-    }
-    if (this.state.gameWon && this.props.lastTurn.value) {
-      return (<WinMessage text={"game over"} />)
-    }
-    if (this.state.tie) {
-      return (<WinMessage text={"tie"} />)
+    if (!this.state.tie) {
+      if (this.state.gameWon) {
+        if (!this.props.lastTurn.value) {
+          return (<WinMessage text={"congratulations!"} />);
+        } else {
+          return (<WinMessage text={"game over"} />);
+        }
+      }
+    } else {
+      return (<WinMessage text={"tie"} />);
     }
   }
 
@@ -157,11 +164,3 @@ export default withRouter (connect(
   mapStateToProps,
   mapDispatchToProps
 )(GameBoard))
-
-
-
-
-
-
-// {this.state.gameWon && <WinMessage text={"congratulations!"} />}
-// {this.state.tie && <WinMessage text={"tie"} />}
