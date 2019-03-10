@@ -118,7 +118,7 @@ class GameBoard extends Component {
         <div className="container">
           <div className='name-container'>
             <h2 className="player-name">{`Player: ${this.nameToUpperCase(this.props.history.location.props.name)}`}</h2>
-            {!this.props.computerTurn ? (<h3>{`Next turn: ${this.nameToUpperCase(this.props.history.location.props.name)}`}</h3>) : (<h3>Next turn: computer thinking</h3>)}
+            {!this.props.computerTurn ? (<h3>{`Next turn: ${this.nameToUpperCase(this.props.history.location.props.name)}`}</h3>) : (<h3>Next turn: Computer</h3>)}
           </div>
           <div className={`board ${this.getBoardClass()}`}>
             {this.chooseMessage()}
