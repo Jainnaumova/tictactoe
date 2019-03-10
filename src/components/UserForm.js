@@ -3,7 +3,6 @@ import SelectSizeMenu from './SelectSizeMenu';
 import { connect } from "react-redux";
 import { getNewBoard, getNewState } from "../actions/board.action";
 import { withRouter } from "react-router-dom";
-import Select from 'react-select';
 
 class UserForm extends Component {
   constructor(props) {
@@ -83,7 +82,7 @@ class UserForm extends Component {
           </div>
         </div>
         <div>
-          <button className={!this.state.level || !this.state.boardSize ? 'start-button start-button-disabled' : 'start-button'} type="submit" disabled={!this.state.level || !this.state.boardSize}>Start game</button>
+          <button className={!level || !boardSize ? 'start-button start-button-disabled' : 'start-button'} type="submit" disabled={!level || !boardSize}>Start game</button>
         </div>
       </form>
     );

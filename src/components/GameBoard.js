@@ -6,10 +6,7 @@ import { handleClick, getNewBoard } from "../actions/board.action";
 import { Link, withRouter } from "react-router-dom";
 import { checkWinner } from '../utils/checkingWinner';
 import {
-  findRandomCell,
   findEmptyCells,
-  findCell,
-  minimax,
 } from "../utils/utilFunc";
 
 import { turnGenerator } from '../ai/turnGenerator';

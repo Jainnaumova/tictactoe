@@ -9,9 +9,7 @@
 import _ from 'lodash';
 import {
   findCellByCoord,
-  findCell,
   findHumanCells,
-  findComputerCells,
   findWithCount
 } from '../utils/utilFunc';
 

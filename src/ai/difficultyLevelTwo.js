@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import {
   findCellByCoord,
-  findCell,
   findHumanCells,
-  findComputerCells
 } from '../utils/utilFunc';
 
 // to left top diagonal
@@ -211,10 +209,6 @@ const checkDiagonalLine1Empty = (board, coord, value) => {
 const checkHorizontallLineEmpty = (board, coord, value) => {
   const one = goLeft(board, coord, value, 0);
   const two = goRight(board, coord, value, 0);
-  const d = {
-    edgeOne: coord,
-    count: one.count + two.count + 1
-  }
   return {
     edgeOne: coord,
     count: one.count + two.count + 1
