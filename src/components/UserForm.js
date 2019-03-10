@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SelectSizeMenu from './SelectSizeMenu';
 import { connect } from "react-redux";
-import { getNewBoard } from "../actions/board.action";
+import { getNewBoard, getNewState } from "../actions/board.action";
 import { withRouter } from "react-router-dom";
 import Select from 'react-select';
 
@@ -16,6 +16,22 @@ class UserForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.location.props) {
+      this.props.getNewState();
+      this.props.getNewBoard(this.props.location.props.boardSize, this.props.location.props.level);
+      const props = {
+        name: this.props.location.props.name,
+        level: this.props.location.props.level,
+        boardSize: this.props.location.props.boardSize
+      };
+      this.props.history.push({
+        pathname: "/game",
+        props
+      });
+    }
   }
 
   handleChange(evt) {
@@ -75,7 +91,8 @@ class UserForm extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getNewBoard: (size, level) => dispatch(getNewBoard(size, level))
+  getNewBoard: (size, level) => dispatch(getNewBoard(size, level)),
+  getNewState: () => dispatch(getNewState())
 });
 
 export default withRouter(
@@ -85,11 +102,3 @@ export default withRouter(
     mapDispatchToProps
   )(UserForm)
 );
-
-
-
-
-
-
-
-// <Select name="boardSize" options={colourOptions} onChange={this.handleChange} value={this.state.boardSize}

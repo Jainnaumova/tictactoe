@@ -3,7 +3,6 @@ import { checkHumanThreeInARow } from './difficultyLevelOne';
 import { checkHumanThreeInARowEmpty } from './difficultyLevelTwo';
 
 export const turnGenerator = (board, difficulty) => {
-debugger
   let potentialTurns;
   switch(difficulty) {
     case 'easy':

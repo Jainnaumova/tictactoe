@@ -28,7 +28,6 @@ class GameBoard extends Component {
   }
 
   componentDidUpdate() {
-    // debugger
     if (!this.state.gameWon && !this.tryAgain) {
       if (checkWinner(this.props.board, this.props.lastTurn)) {
         this.gameWon = checkWinner(this.props.board, this.props.lastTurn);
@@ -49,10 +48,9 @@ class GameBoard extends Component {
       this.props.computerTurn &&
       findEmptyCells(this.props.board).length
     ) {
-      // this.markCellByComputer();
       setTimeout(() => {
         this.markCellByComputer()
-      }, 800)
+      }, 600)
     }
     if (this.tryAgain) {
       this.tryAgain = false;
@@ -73,10 +71,8 @@ class GameBoard extends Component {
   }
 
   markCellByComputer() {
-    debugger
     const board = this.props.board.slice();
     const cell = turnGenerator(board, this.props.location.props.level);
-    debugger
     const data = { id: cell.id, value: this.props.computerTurn ? false : true };
     this.props.handleClick(data); // handleClick from action creator
   }
@@ -91,14 +87,21 @@ class GameBoard extends Component {
   }
 
   handleTryAgain() {
-    this.tryAgain = true;
-    this.props.getNewBoard(this.props.location.props.boardSize, this.props.location.props.level);
+    const props = {
+      name: this.props.location.props.name,
+      level: this.props.location.props.level,
+      boardSize: this.props.location.props.boardSize
+    };
+    this.props.history.push({
+      pathname: "/",
+      props
+    });
   }
 
   chooseMessage() {
     if (!this.state.tie) {
       if (this.state.gameWon) {
-        if (!this.props.lastTurn.value) {
+        if (this.props.computerTurn) {
           return (<WinMessage text={"congratulations!"} />);
         } else {
           return (<WinMessage text={"game over"} />);
@@ -110,7 +113,6 @@ class GameBoard extends Component {
   }
 
   render() {
-    debugger
     const { board } = this.props;
     return (
       <div>
@@ -121,7 +123,7 @@ class GameBoard extends Component {
             {!this.props.computerTurn ? (<h3>{`Next turn: ${this.nameToUpperCase(this.props.history.location.props.name)}`}</h3>) : (<h3>Next turn: Computer</h3>)}
           </div>
           <div className={`board ${this.getBoardClass()}`}>
-            {this.chooseMessage()}
+            {!this.tryAgain && this.chooseMessage()}
             {board.map((cell, i) => {
               return (
                 <Cell

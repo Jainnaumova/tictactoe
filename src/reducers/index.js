@@ -1,4 +1,4 @@
-import { CREATE_BOARD, CHECK_CELL } from "../actions/board.action";
+import { CREATE_BOARD, CHECK_CELL, RESET_STATE } from "../actions/board.action";
 import { createBoard, findCell } from "../utils/utilFunc";
 
 export const initialState = {
@@ -16,6 +16,8 @@ export const rootReducer = (state = initialState, action) => {
       cell.value = action.data.value;
       const turn = { x: cell.x, y: cell.y };
       return { ...state, computerTurn: !state.computerTurn, lastTurn: turn };
+    case RESET_STATE:
+      return {...state, computerTurn: false, lastTurn: null}
     default:
       return state;
   }
