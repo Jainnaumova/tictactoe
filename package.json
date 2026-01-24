@@ -10,7 +10,7 @@
     "enzyme-to-json": "^3.3.5",
     "jest": "^24.5.0",
     "jest-junit": "^6.3.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.23",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-redux": "^6.0.1",
